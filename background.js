@@ -586,9 +586,19 @@ function getArticleInfo(tab) {
                 console.log("Could not find matching article in database.");
             }
             conditionalActivate(articleInfo, tab);
+            notifyPopup(articleInfo);
         }
     };
     xmlhttp.send();
+}
+
+function notifyPopup(articleInfo) {
+    chrome.runtime.sendMessage({
+        msg: "articleInfo",
+        data: articleInfo
+    });
+    chrome.storage.sync.set({'articleInfo': articleInfo});
+    console.log("SENT MESSAGE");
 }
 
 function conditionalActivate(articleInfo, tab) {

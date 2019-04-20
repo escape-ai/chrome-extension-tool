@@ -18,90 +18,54 @@
 </head>
 <body style="width: 400px; height: 400px">
 
-<div class="container">
-    <p></p>
-    <h3>Crowd-Sourced Analysis</h3>
-    <h4 id="title-display">The Onion</h4>
+<div class="container px-0 bg-dark text-light text-center">
+    <div class="py-1 px-0 badge-primary">
+        <h3 class="">Crowd-Sourced Analysis</h3>
+    </div>
+    <div class="py-2">
+        <h1 id="title" class="">The Onion</h1>
+    </div>
 
-    <blockquote class="blockquote">
-        <span id="article-title" class="mb-0">White House Says Mueller Report Must Be Kept Private Because It’s So Exonerating It Would Drive Public Mad. </span>
-    </blockquote>
+    <div id="tags">
+        <div class="row">
+            <div class="col badge-pill badge-light">politics</div>
+            <div class="col badge-pill badge-light">sports</div>
+            <div class="col badge-pill badge-light">technology</div>
+            <div class="col badge-pill badge-light">trump</div>
+        </div>
+    </div>
 
+    <div>
+        <div class="row">
+            <div class="col"> Crowd Sourced Opinions</div>
+        </div>
+        <div class="row">
+            <div class="col">Opinions</div>
+        </div>
+        <div id="score" class="row">
+            <div id="true-ratio" class="col">50%</div>
+            <div id="false-ratio" class="col">50%</div>
+        </div>
+        <div class="row">
+            <div class="col">Weighted Opinions</div>
+        </div>
+        <div id="weighted-score" class="row">
+            <div id="weighted-true-ratio" class="col">50%</div>
+            <div id="weighted-false-ratio" class="col">50%</div>
+        </div>
+    </div>
 
-    <span id="rating" class="badge badge-warning">Questionable</span>
+    <div id="truth-value" class="row">
+        <div class="col">
+            True
+        </div>
+    </div>
 
-    <p></p>
-    <button type="button" class="btn btn-primary"> Crowd Sourced Opinions</button>
-    <p></p>
-
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th>Opinion of players</th>
-            <th>Number of Players</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>Real</td>
-            <td>44</td>
-
-        </tr>
-
-        <tr>
-            <td>Fake</td>
-            <td>30</td>
-        </tr>
-
-        <tr>
-            <td>Unsure</td>
-            <td>15</td>
-
-        </tr>
-
-        <tr>
-            <td>Inacccurate</td>
-            <td>14</td>
-
-        </tr>
-
-
-        </tbody>
-    </table>
-    <br>
-    </span>
-
-    <button type="button" class="btn btn-success"> Adjusted Scores</button>
-    <p></p>
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th>Accuracy of article</th>
-            <th>Probability (%)</th>
-        </tr>
-        </thead>
-        <tbody>
-
-        <tr>
-            <td>Fake</td>
-            <td>68</td>
-        </tr>
-
-        <tr>
-            <td>Real</td>
-            <td>29</td>
-
-        </tr>
-
-        <tr>
-            <td>Inacccurate</td>
-            <td>13</td>
-
-        </tr>
-
-
-        </tbody>
-    </table>
+    <div id="rating" class="row">
+        <div class="col">
+            Questionable
+        </div>
+    </div>
 </div>
 
 </body>

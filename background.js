@@ -583,27 +583,22 @@ function getArticleInfo(tab) {
                 console.log("Found article in database!");
                 console.log(articleInfo);
             } else {
-                console.log("Could not find matching article in database.")
+                console.log("Could not find matching article in database.");
             }
+            conditionalActivate(articleInfo, tab);
         }
     };
     xmlhttp.send();
 }
 
-function conditionalActivate(tab) {
-    let articleInfo = getArticleInfo(tab);
-    chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
-        chrome.declarativeContent.onPageChanged.addRules([{
-            conditions: [
-                new chrome.declarativeContent.PageStateMatcher({
-                    // pageUrl: {hostEquals: '*'},
-                })
-            ],
-            actions: [
-                new chrome.declarativeContent.ShowPageAction(),
-            ]
-        }]);
-    });
+function conditionalActivate(articleInfo, tab) {
+    if (articleInfo !== undefined) {
+        console.log("ENABLING");
+        chrome.pageAction.show(tab.id);
+    } else {
+        console.log("DISABLING");
+        chrome.pageAction.hide(tab.id);
+    }
 }
 
 chrome.runtime.onInstalled.addListener(function () {
@@ -615,7 +610,12 @@ chrome.runtime.onInstalled.addListener(function () {
 
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     if (changeInfo.status === "complete") {
-        console.log(tab);
-        conditionalActivate(tab);
+        getArticleInfo(tab);
     }
+});
+
+chrome.tabs.onActivated.addListener(function (activeInfo) {
+    chrome.tabs.get(activeInfo.tabId, function (tab) {
+        getArticleInfo(tab)
+    });
 });

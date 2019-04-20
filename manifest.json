@@ -1,11 +1,18 @@
 {
   "name": "Fakerinos",
-  "version": "1.0",
-  "description": "Crowd Sourced Insights on the News you are reading",
+  "version": "0.1",
+  "description": "Crowd-Sourced Insights on the News You Read.",
   "options_page": "options.html",
-  "permissions": ["declarativeContent", "activeTab","storage"],
+  "permissions": [
+    "declarativeContent",
+    "activeTab",
+    "storage",
+    "*://fakerinos.herokuapp.com/*"
+  ],
   "background": {
-    "scripts": ["background.js"],
+    "scripts": [
+      "background.js"
+    ],
     "persistent": false
   },
   "page_action": {

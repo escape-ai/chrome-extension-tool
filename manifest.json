@@ -1,7 +1,7 @@
 {
-  "name": "Getting Started Example",
+  "name": "Fakerinos",
   "version": "1.0",
-  "description": "Build an Extension!",
+  "description": "Crowd Sourced Insights on the News you are reading",
   "options_page": "options.html",
   "permissions": ["declarativeContent", "activeTab","storage"],
   "background": {

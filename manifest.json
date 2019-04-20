@@ -6,6 +6,7 @@
   "permissions": [
     "declarativeContent",
     "activeTab",
+    "tabs",
     "storage",
     "*://fakerinos.herokuapp.com/*"
   ],

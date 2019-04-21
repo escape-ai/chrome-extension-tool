@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             if (articleInfo['rating']) {
-                rating.innerText = articleInfo['rating'];
+                rating.innerText = 'Questionable';
                 rating.classList.add(articleInfo['truth_value'] ? 'badge-success' : 'badge-warning');
                 rating.classList.remove('badge-light');
             }

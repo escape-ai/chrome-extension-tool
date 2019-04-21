@@ -586,15 +586,12 @@ function getArticleInfo(tab) {
                 console.log("Could not find matching article in database.");
             }
             conditionalActivate(articleInfo, tab);
+            notifyPopup(articleInfo);
         }
     };
     xmlhttp.send();
 }
 
-/**
- * @deprecated
- * @param articleInfo
- */
 function notifyPopup(articleInfo) {
     chrome.runtime.sendMessage({
         msg: "articleInfo",

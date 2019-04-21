@@ -4,10 +4,11 @@ document.addEventListener('DOMContentLoaded', function () {
     let tags = document.getElementById("tags");
     let tagTemplate = document.querySelector("#tag-template");
     let poll = document.getElementById("poll");
-    let weighted_true_ratio = document.getElementById("weighted-true-ratio");
-    let weighted_false_ratio = document.getElementById("weighted-false-ratio");
+    let publicTrueBar = document.getElementById("public-true-ratio");
+    let publicFalseBar = document.getElementById("public-false-ratio");
+    let expertTrueBar = document.getElementById("expert-true-ratio");
+    let expertFalseBar = document.getElementById("expert-false-ratio");
     let truth = document.getElementById("truth");
-    let truth_container = document.getElementById("truth-container");
     let truth_value = document.getElementById("truth-value");
     let rating = document.getElementById("rating");
 
@@ -20,13 +21,39 @@ document.addEventListener('DOMContentLoaded', function () {
             let tagText = tag.querySelector('h4');
             tagText.innerHTML = tagName;
             tags.appendChild(tag);
-            console.log(tag.innerHTML);
         }
 
+        console.log(articleInfo);
         if (articleInfo['is_poll']) {
             title.innerHTML = "Crowd-Sourced Analysis";
             poll.classList.remove('d-none');
             truth.classList.add('d-none');
+
+            let publicRatio = articleInfo['average_score'];
+            var publicTrueString = publicTrueBar.innerText = `${(100 * (publicRatio)).toFixed(1)}%`;
+            var publicFalseString = publicFalseBar.innerText = `${(100 * (1 - publicRatio)).toFixed(1)}%`;
+            publicTrueBar.style.width = publicTrueString;
+            publicFalseBar.style.width = publicFalseString;
+            if (publicRatio <= 0.5) {
+                publicFalseBar.classList.add("progress-bar-animated", "progress-bar-striped");
+                publicTrueBar.classList.remove("progress-bar-animated", "progress-bar-striped");
+            } else {
+                publicFalseBar.classList.remove("progress-bar-animated", "progress-bar-striped");
+                publicTrueBar.classList.add("progress-bar-animated", "progress-bar-striped");
+            }
+
+            let expertRatio = articleInfo['weighted_average_score'];
+            var expertTrueString = expertTrueBar.innerText = `${(100 * (expertRatio)).toFixed(1)}%`;
+            var expertFalseString = expertFalseBar.innerText = `${(100 * (1 - expertRatio)).toFixed(1)}%`;
+            expertTrueBar.style.width = expertTrueString;
+            expertFalseBar.style.width = expertFalseString;
+            if (expertRatio <= 0.5) {
+                expertFalseBar.classList.add("progress-bar-animated", "progress-bar-striped");
+                expertTrueBar.classList.remove("progress-bar-animated", "progress-bar-striped");
+            } else {
+                expertFalseBar.classList.remove("progress-bar-animated", "progress-bar-striped");
+                expertTrueBar.classList.add("progress-bar-animated", "progress-bar-striped");
+            }
         } else {
             title.innerHTML = "Article Analysis";
             poll.classList.add('d-none');
@@ -36,21 +63,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 truth_value.classList.add('badge-success');
                 truth_value.innerText = 'True';
             } else {
+                truth_value.classList.add('badge-danger');
+                truth_value.innerText = 'False';
             }
 
             if (articleInfo['rating']) {
                 rating.innerText = articleInfo['rating'];
-            }
-            switch (articleInfo['rating']) {
-                case '':
-                    rating.classList.add('badge-light');
-                    break;
-                case 'questionable':
-                    rating.classList.add('badge-warning');
-                    break;
-                case 'pants on fire':
-                    rating.classList.add('badge-danger');
-                    break;
+                rating.classList.add(articleInfo['truth_value'] ? 'badge-success' : 'badge-warning');
+                rating.classList.remove('badge-light');
             }
         }
     });

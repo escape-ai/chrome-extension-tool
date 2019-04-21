@@ -38,17 +38,23 @@
         </div>
     </div>
 
-    <div id="poll" class="py-4">
-        <table class="table table-hover" style="overflow: scroll">
-            <thead>
-            <tr>
-                <th class="lead">Public Opinion</th>
-                <th class="lead">Expert Opinion</th>
-            </tr>
-            </thead>
+    <div class="py-4">
+        <table class="table table-hover" style="overflow: scroll; table-layout: fixed">
             <tbody>
-            <tr>
-                <td class="align-middle">
+            <tr id="domain">
+                <td colspan="2" class="lead text-left">Domain</td>
+                <td colspan="2" id="domain-name" class="badge-light align-middle">http://domain.com</td>
+                <td colspan="2">
+                    <h3><span id="domain-status" class="badge badge-light">Unknown</span></h3>
+                </td>
+            </tr>
+            <tr id="source-credibility">
+                <td colspan="3" class="lead text-left">Source Credibility</td>
+                <td colspan="3" id="domain-credibility-value" class="text-right"></td>
+            </tr>
+            <tr id="poll-public">
+                <td colspan="3" class="lead text-left">Public Opinion</td>
+                <td colspan="3" class="align-middle">
                     <div class="progress" style="margin-bottom:0; height: 30px!important;">
                         <div class="progress-bar progress-bar-animated progress-bar-striped bg-success"
                              id="public-true-ratio"
@@ -62,7 +68,10 @@
                         </div>
                     </div>
                 </td>
-                <td class="align-middle">
+            </tr>
+            <tr id="poll-expert">
+                <td colspan="3" class="lead text-left">Expert Opinion</td>
+                <td colspan="3" class="align-middle">
                     <div class="progress" style="margin-bottom:0; height: 30px!important;">
                         <div class="progress-bar progress-bar-animated progress-bar-striped bg-success"
                              id="expert-true-ratio"
@@ -77,29 +86,20 @@
                     </div>
                 </td>
             </tr>
+            <tr id="truth">
+                <td colspan="3" class="align-middle text-left lead">Genuineness</td>
+                <td colspan="3" class="align-middle text-right">
+                    <h1 class="display-4"><span id="truth-value" class="badge">something</span></h1>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" class="align-middle text-left lead">Rating</td>
+                <td colspan="3" class="align-middle text-right">
+                    <h1 class="display-4"><span id="rating" class="badge badge-light">Unknown</span></h1>
+                </td>
+            </tr>
             </tbody>
         </table>
-    </div>
-
-    <div id="truth" class="row py-2">
-        <div class="col">
-            <table class="table table-hover">
-                <tbody>
-                <tr>
-                    <td class="align-middle text-left"><h4>Genuineness</h4></td>
-                    <td class="align-middle text-right"><h1 class="display-4">
-                        <span id="truth-value" class="badge">something</span>
-                    </h1></td>
-                </tr>
-                <tr>
-                    <td class="align-middle text-left"><h4>Rating</h4></td>
-                    <td class="align-middle text-right"><h1 class="display-4">
-                        <span id="rating" class="badge badge-light">Unknown</span>
-                    </h1></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
     </div>
 </div>
 

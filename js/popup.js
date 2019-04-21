@@ -3,7 +3,8 @@ document.addEventListener('DOMContentLoaded', function () {
     let headline = document.getElementById("headline");
     let tags = document.getElementById("tags");
     let tagTemplate = document.querySelector("#tag-template");
-    let poll = document.getElementById("poll");
+    let pollPublic = document.getElementById("poll-public");
+    let pollExpert = document.getElementById("poll-expert");
     let publicTrueBar = document.getElementById("public-true-ratio");
     let publicFalseBar = document.getElementById("public-false-ratio");
     let expertTrueBar = document.getElementById("expert-true-ratio");
@@ -26,7 +27,8 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log(articleInfo);
         if (articleInfo['is_poll']) {
             title.innerHTML = "Crowd-Sourced Analysis";
-            poll.classList.remove('d-none');
+            pollPublic.classList.remove('d-none');
+            pollExpert.classList.remove('d-none');
             truth.classList.add('d-none');
 
             let publicRatio = articleInfo['average_score'];
@@ -56,7 +58,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         } else {
             title.innerHTML = "Article Analysis";
-            poll.classList.add('d-none');
+            pollPublic.classList.add('d-none');
+            pollExpert.classList.add('d-none');
             truth.classList.remove('d-none');
 
             if (articleInfo['truth_value']) {
@@ -68,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             if (articleInfo['rating']) {
-                rating.innerText = 'Questionable';
+                rating.innerText = articleInfo['rating'];
                 rating.classList.add(articleInfo['truth_value'] ? 'badge-success' : 'badge-warning');
                 rating.classList.remove('badge-light');
             }

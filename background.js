@@ -555,8 +555,15 @@ function fetchDomains() {
     xmlhttp.onreadystatechange = function () {
         if (this.readyState === 4) {
             const domains = JSON.parse(this.responseText);
-            chrome.storage.sync.set({domains: domains});
-            console.log(`Found ${domains.length} domains.`);
+            for (let domain of domains) {
+                domain['url'] = domain['url'];
+            }
+            let domainsDict = {};
+            for (let domain of domains) {
+                domainsDict[domain.url] = domain;
+            }
+            chrome.storage.sync.set({domains: domainsDict});
+            console.log(domainsDict);
         }
     };
     xmlhttp.send();
@@ -580,41 +587,39 @@ function getArticleInfo(tab) {
         if (this.readyState === 4) {
             if (this.status === 200) {
                 articleInfo = JSON.parse(this.responseText);
-                console.log("Found article in database!");
                 console.log(articleInfo);
             } else {
-                console.log("Could not find matching article in database.");
+                let newUrl = new URL(url);
+                articleInfo = {domain: newUrl.protocol + '//' +  newUrl.hostname};
             }
-            conditionalActivate(articleInfo, tab);
-            notifyPopup(articleInfo);
+            setArticleInfoAndActivate(articleInfo, tab);
         }
     };
     xmlhttp.send();
 }
 
-function notifyPopup(articleInfo) {
-    chrome.runtime.sendMessage({
-        msg: "articleInfo",
-        data: articleInfo
-    });
-    chrome.storage.sync.set({'articleInfo': articleInfo});
-    console.log("SENT MESSAGE");
-}
-
-function conditionalActivate(articleInfo, tab) {
-    if (articleInfo !== undefined) {
-        console.log("ENABLING");
+function setArticleInfoAndActivate(articleInfo, tab) {
+    chrome.pageAction.hide(tab.id);
+    if ('headline' in articleInfo) {
+        chrome.storage.sync.set({'articleInfo': articleInfo});
+        console.log("Matched article");
         chrome.pageAction.show(tab.id);
     } else {
-        console.log("DISABLING");
-        chrome.pageAction.hide(tab.id);
+        chrome.storage.sync.get('domains', function (data) {
+            let domains = data.domains;
+            let domain = articleInfo['domain'];
+            console.log(`Domain: ${domain}`);
+            for (let dom in domains) {
+                if (dom === domain) {
+                    console.log(`Matched Domain ${domain}!`);
+                    chrome.pageAction.show(tab.id);
+                }
+            }
+        });
     }
 }
 
 chrome.runtime.onInstalled.addListener(function () {
-    chrome.storage.sync.set({color: '#3aa757'}, function () {
-        console.log("The color is green.");
-    });
     fetchDomains();
 });
 

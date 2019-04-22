@@ -590,7 +590,7 @@ function getArticleInfo(tab) {
                 console.log(articleInfo);
             } else {
                 let newUrl = new URL(url);
-                articleInfo = {domain: newUrl.protocol + '//' +  newUrl.hostname};
+                articleInfo = {domain: newUrl.protocol + '//' + newUrl.hostname};
             }
             setArticleInfoAndActivate(articleInfo, tab);
         }
@@ -613,6 +613,7 @@ function setArticleInfoAndActivate(articleInfo, tab) {
                 if (dom === domain) {
                     console.log(`Matched Domain ${domain}!`);
                     chrome.pageAction.show(tab.id);
+                    chrome.storage.sync.set({'articleInfo': articleInfo});
                 }
             }
         });

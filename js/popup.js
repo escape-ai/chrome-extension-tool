@@ -551,22 +551,19 @@ document.addEventListener('DOMContentLoaded', function () {
     let truth = document.getElementById("truth");
     let truth_value = document.getElementById("truth-value");
     let rating = document.getElementById("rating");
-    let domain = document.getElementById("domain");
-    let domainName = document.getElementById("domain-name");
+    let ratingContainer = document.getElementById("rating-container");
+    let domainElement = document.getElementById("domain");
+    let domainNameElement = document.getElementById("domain-name");
     let domainStatus = document.getElementById("domain-status");
     let source = document.getElementById("source");
     let sourceCredibility = document.getElementById("source-credibility");
 
     chrome.storage.sync.get('articleInfo', function (data) {
         let articleInfo = data.articleInfo;
-        console.log(articleInfo);
-        headline.innerHTML = articleInfo['headline'];
-
-        for (let tagName of articleInfo.tags) {
-            let tag = document.importNode(tagTemplate.content, true);
-            let tagText = tag.querySelector('h4');
-            tagText.innerHTML = tagName;
-            tags.appendChild(tag);
+        if ('headline' in articleInfo) {
+            headline.innerHTML = articleInfo['headline'];
+        } else {
+            headline.innerText = `Domain: ${articleInfo.domain}`
         }
 
         if (articleInfo['is_poll']) {
@@ -604,30 +601,88 @@ document.addEventListener('DOMContentLoaded', function () {
             title.innerHTML = "Article Analysis";
             pollPublic.classList.add('d-none');
             pollExpert.classList.add('d-none');
-            truth.classList.remove('d-none');
 
-            if (articleInfo['truth_value']) {
-                truth_value.classList.add('badge-success');
-                truth_value.innerText = 'True';
+            if ('truth_value' in articleInfo) {
+                truth.classList.remove('d-none');
+                if (articleInfo['truth_value']) {
+                    truth_value.classList.add('badge-success');
+                    truth_value.innerText = 'True';
+                } else {
+                    truth_value.classList.add('badge-danger');
+                    truth_value.innerText = 'False';
+                }
             } else {
-                truth_value.classList.add('badge-danger');
-                truth_value.innerText = 'False';
+                truth.classList.add('d-none');
+
             }
 
-            if (articleInfo['rating']) {
-                rating.innerText = articleInfo['rating'];
-                rating.classList.add(articleInfo['truth_value'] ? 'badge-success' : 'badge-warning');
-                rating.classList.remove('badge-light');
+            if ('rating' in articleInfo) {
+                if (articleInfo['rating']) {
+                    rating.innerText = articleInfo['rating'];
+                    rating.classList.add(articleInfo['truth_value'] ? 'badge-success' : 'badge-warning');
+                    rating.classList.remove('badge-light');
+                }
+            }
+            else{
+                ratingContainer.classList.add('d-none');
             }
         }
 
         chrome.storage.sync.get('domains', function (data) {
             let domains = data.domains;
-            let domain = articleInfo['domain'];
-            console.log(domains);
-            console.log(domain);
-            if (domain in domains) {
-                console.log("MATHCED DOMAIN AGAINSSSS")
+            let dom = articleInfo['domain'];
+            let domainInfo = domains[dom];
+            console.log(domainInfo);
+
+            if (!('tags' in articleInfo)) {
+                articleInfo['tags'] = domainInfo['domain_tags'];
+            }
+
+            for (let tagName of articleInfo.tags) {
+                let tag = document.importNode(tagTemplate.content, true);
+                let tagText = tag.querySelector('h4');
+                tagText.innerHTML = tagName;
+                tags.appendChild(tag);
+            }
+
+            function credName(val) {
+                if (val <= 3) {
+                    return 'Untrustworthy';
+                } else if (val <= 5) {
+                    return "Questionable";
+                } else if (val <= 8) {
+                    return "Somewhat Reliable";
+                } else if (val <= 10) {
+                    return "Trustworthy";
+                } else {
+                    return 'Unknown';
+                }
+            }
+
+            function credColor(val) {
+                if (val <= 3) {
+                    return 'badge-danger';
+                } else if (val <= 6) {
+                    return "badge-warning";
+                } else if (val <= 8) {
+                    return "badge-info";
+                } else if (val <= 10) {
+                    return "badge-success";
+                } else {
+                    return 'badge-light';
+                }
+            }
+
+            if (domainInfo) {
+                domainStatus.innerText = 'Known';
+                domainStatus.classList.add('badge-success');
+                domainElement.classList.remove('d-none');
+                domainNameElement.innerText = dom;
+                sourceCredibility.innerText = credName(domainInfo['credibility']);
+                sourceCredibility.classList.add(credColor(domainInfo['credibility']));
+            } else {
+                domainStatus.classList.add('badge-light');
+                domainElement.classList.add('d-none');
             }
         });
     });
